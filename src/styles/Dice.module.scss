@@ -1,0 +1,14 @@
+.dice {
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  color: white;
+  background-color: var(--color-dice);
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: 2px solid black;
+  border-radius: 5px;
+}

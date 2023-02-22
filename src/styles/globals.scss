@@ -1,0 +1,14 @@
+:root {
+  --max-width: 1100px;
+  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono', 'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro', 'Fira Mono',
+    'Droid Sans Mono', 'Courier New', monospace;
+  --color-dice: #f71735;
+  --color-background: #ffc933;
+}
+
+html {
+  background-color: var(--color-background);
+  background-image: radial-gradient(#000000 0.4px, transparent 0.4px), radial-gradient(#000000 0.4px, var(--color-background) 0.4px);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+}
