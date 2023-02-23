@@ -7,10 +7,10 @@ import styles from '@/styles/Dice.module.scss';
 import { diceRoll, extractMaxValueFromType } from '@/utils/diceFunction';
 
 type DiceProps = {
-  type?: string;
+  type: string;
 };
 
-export default function Dice({ type = 'D6' }: DiceProps) {
+export default function Dice({ type }: DiceProps) {
   const [value, setValue] = useState<number | null>(null);
   const maxValue = extractMaxValueFromType(type);
 
