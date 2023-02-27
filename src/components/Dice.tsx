@@ -1,14 +1,12 @@
 import { useState } from 'react';
 
+import type { DiceProps } from '@/utils/constants';
+
 import Button from './Button';
 
 import styles from '@/styles/Dice.module.scss';
 
 import { diceRoll, extractMaxValueFromType } from '@/utils/diceFunction';
-
-type DiceProps = {
-  type: string;
-};
 
 export default function Dice({ type }: DiceProps) {
   const [value, setValue] = useState<number | null>(null);

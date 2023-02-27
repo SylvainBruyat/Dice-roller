@@ -1,8 +1,7 @@
-import Dice from './Dice';
-import { diceTypes } from '@/utils/constants';
 import { ChangeEvent, ReactEventHandler, useState } from 'react';
 
-const defaultDiceType: string = 'D6';
+import Dice from './Dice';
+import { availableTypesOfDice, defaultDiceType } from '@/utils/constants';
 
 export default function DiceContainer() {
   const [diceType, setDiceType] = useState<string>(defaultDiceType);
@@ -13,17 +12,17 @@ export default function DiceContainer() {
   }
 
   return (
-    <>
+    <div>
       <select name='dice-type' defaultValue={'D6'} onChange={(evt) => handleTypeSelection(evt)}>
-        {diceTypes.map(({ value }) => {
+        {availableTypesOfDice.map(({ shortName }) => {
           return (
-            <option key={value} value={value}>
-              {value}
+            <option key={shortName} value={shortName}>
+              {shortName}
             </option>
           );
         })}
       </select>
       <Dice type={diceType} />
-    </>
+    </div>
   );
 }
