@@ -8,7 +8,7 @@ describe('Tests for Dice component', function () {
 
   it('should display a dice of the correct type', function () {
     const diceText = screen.getByText('D12');
-    expect(diceText.textContent).toBe('D12');
+    expect(diceText).toBeTruthy();
   });
 
   it('should display a roll button', function () {
@@ -17,7 +17,7 @@ describe('Tests for Dice component', function () {
     expect(button.textContent).toBe('Lancer');
   });
 
-  it('should return a value within the correct range', function () {
+  it('should return a value within the correct range when the dice is rolled', function () {
     const diceText = screen.getByText('D12');
     const rollButton = screen.getByRole('button');
     fireEvent.click(rollButton);
