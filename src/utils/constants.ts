@@ -1,5 +1,7 @@
 export type DiceProps = {
   type: string;
+  value: number | null;
+  setValue: Function;
 };
 
 type TypeOfDice = {

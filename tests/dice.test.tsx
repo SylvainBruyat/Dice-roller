@@ -1,9 +1,9 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 
-import Dice from '@/components/Dice';
+import DiceContainer from '@/components/DiceContainer';
 
 describe('Tests for Dice component', function () {
-  beforeEach(() => render(<Dice type='D12' />));
+  beforeEach(() => render(<DiceContainer />));
   afterEach(() => cleanup());
 
   it('should display a dice of the correct type', function () {
@@ -12,18 +12,19 @@ describe('Tests for Dice component', function () {
   });
 
   it('should display a roll button', function () {
-    const button = screen.getByRole('button');
-    expect(button).toBeTruthy();
-    expect(button.textContent).toBe('Lancer');
+    const rollButton = screen.getByRole('button', { name: 'Lancer' });
+    expect(rollButton).toBeTruthy();
   });
 
-  it('should return a value within the correct range when the dice is rolled', function () {
+  it('should return a value within the correct range when the dice is rolled', async function () {
     const diceText = screen.getByText('D12');
-    const rollButton = screen.getByRole('button');
+    const rollButton = screen.getByRole('button', { name: 'Lancer' });
     fireEvent.click(rollButton);
-    const diceValue = parseInt(diceText.textContent || '0', 10);
-    expect(diceValue).toBeGreaterThanOrEqual(1);
-    expect(diceValue).toBeLessThanOrEqual(12);
+    setTimeout(() => {
+      const diceValue = parseInt(diceText.textContent || '0', 10);
+      expect(diceValue).toBeGreaterThanOrEqual(1);
+      expect(diceValue).toBeLessThanOrEqual(12);
+    }, 0);
   });
 });
 

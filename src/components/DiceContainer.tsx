@@ -5,6 +5,7 @@ import { availableTypesOfDice, defaultDiceType } from '@/utils/constants';
 
 export default function DiceContainer() {
   const [diceType, setDiceType] = useState<string>(defaultDiceType);
+  const [value, setValue] = useState<number | null>(null);
 
   function handleTypeSelection(evt: ChangeEvent<HTMLSelectElement>) {
     const newDiceType = evt.target.value;
@@ -22,7 +23,7 @@ export default function DiceContainer() {
           );
         })}
       </select>
-      <Dice type={diceType} />
+      <Dice type={diceType} value={value} setValue={setValue} />
     </div>
   );
 }
