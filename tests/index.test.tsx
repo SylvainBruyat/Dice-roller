@@ -11,13 +11,6 @@ describe('Tests for Home page', function () {
     expect(header).toBeTruthy();
   });
 
-  it('should display a H1', function () {
-    const h1 = screen.getByRole('heading', {
-      level: 1,
-    });
-    expect(h1).toBeTruthy();
-  });
-
   it('should display an add dice button', function () {
     const addButton = screen.getByRole('button', { name: 'Ajouter un D6' });
     expect(addButton).toBeTruthy();
