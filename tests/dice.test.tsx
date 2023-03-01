@@ -7,8 +7,9 @@ describe('Tests for Dice component', function () {
   afterEach(() => cleanup());
 
   it('should display a dice of the correct type', function () {
-    const diceText = screen.getByText('D12');
-    expect(diceText).toBeTruthy();
+    const diceTextParagraph = screen.getAllByText('D6')[1];
+    console.log(diceTextParagraph);
+    expect(diceTextParagraph).toBeTruthy();
   });
 
   it('should display a roll button', function () {
@@ -17,14 +18,14 @@ describe('Tests for Dice component', function () {
   });
 
   it('should return a value within the correct range when the dice is rolled', async function () {
-    const diceText = screen.getByText('D12');
+    const diceTextParagraph = screen.getAllByText('D6')[1];
     const rollButton = screen.getByRole('button', { name: 'Lancer' });
     fireEvent.click(rollButton);
-    setTimeout(() => {
-      const diceValue = parseInt(diceText.textContent || '0', 10);
-      expect(diceValue).toBeGreaterThanOrEqual(1);
-      expect(diceValue).toBeLessThanOrEqual(12);
-    }, 0);
+
+    const diceValue = parseInt(diceTextParagraph.textContent || '0', 10);
+    expect(await screen.findByText(/^[1-6]$/)).toBeTruthy();
+    expect(diceValue).toBeGreaterThanOrEqual(1);
+    expect(diceValue).toBeLessThanOrEqual(6);
   });
 });
 
