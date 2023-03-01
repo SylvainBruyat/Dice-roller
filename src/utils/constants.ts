@@ -1,7 +1,12 @@
 export type DiceProps = {
   type: string;
   value: number | null;
-  setValue: Function;
+  handleDiceUpdate: Function;
+};
+
+export type DiceObject = {
+  type: string;
+  value: number | null;
 };
 
 type TypeOfDice = {
@@ -20,3 +25,5 @@ export const availableTypesOfDice: TypeOfDice[] = [
 ];
 
 export const defaultDiceType: string = 'D6';
+
+export const defaultDice: DiceObject = { type: 'D6', value: null };

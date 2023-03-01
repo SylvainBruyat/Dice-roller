@@ -1,20 +1,26 @@
 import { ChangeEvent, ReactEventHandler, useState } from 'react';
 
 import Dice from './Dice';
-import { availableTypesOfDice, defaultDiceType } from '@/utils/constants';
+import { DiceObject, availableTypesOfDice, defaultDiceType, defaultDice } from '@/utils/constants';
+import { diceRoll, extractMaxValueFromType } from '@/utils/diceFunction';
 
 export default function DiceContainer() {
-  const [diceType, setDiceType] = useState<string>(defaultDiceType);
-  const [value, setValue] = useState<number | null>(null);
+  const [dice, setDice] = useState<DiceObject>(defaultDice);
 
-  function handleTypeSelection(evt: ChangeEvent<HTMLSelectElement>) {
-    const newDiceType = evt.target.value;
-    setDiceType(newDiceType);
+  function handleDiceUpdate(evt: ChangeEvent<HTMLSelectElement> | MouseEvent) {
+    if (evt?.target instanceof HTMLSelectElement) {
+      const newDiceType = evt.target.value;
+      setDice({ type: newDiceType, value: null });
+    } else {
+      const maxValue = extractMaxValueFromType(dice.type);
+      const newDiceValue = diceRoll(maxValue);
+      setDice({ ...dice, value: newDiceValue });
+    }
   }
 
   return (
     <div>
-      <select name='dice-type' defaultValue={'D6'} onChange={(evt) => handleTypeSelection(evt)}>
+      <select name='dice-type' defaultValue={'D6'} onChange={(evt) => handleDiceUpdate(evt)}>
         {availableTypesOfDice.map(({ shortName }) => {
           return (
             <option key={shortName} value={shortName}>
@@ -23,7 +29,7 @@ export default function DiceContainer() {
           );
         })}
       </select>
-      <Dice type={diceType} value={value} setValue={setValue} />
+      <Dice type={dice.type} value={dice.value} handleDiceUpdate={handleDiceUpdate} />
     </div>
   );
 }

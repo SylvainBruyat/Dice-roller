@@ -6,15 +6,11 @@ import Button from './Button';
 
 import styles from '@/styles/Dice.module.scss';
 
-import { diceRoll, extractMaxValueFromType } from '@/utils/diceFunction';
-
-export default function Dice({ type, value, setValue }: DiceProps) {
-  const maxValue = extractMaxValueFromType(type);
-
+export default function Dice({ type, value, handleDiceUpdate }: DiceProps) {
   return (
     <>
       <div className={styles.dice}>{value === null ? <p>{type}</p> : <p>{value}</p>}</div>
-      <Button diceRoll={diceRoll} maxValue={maxValue} setValue={setValue} />
+      <Button handleDiceUpdate={handleDiceUpdate} />
     </>
   );
 }
