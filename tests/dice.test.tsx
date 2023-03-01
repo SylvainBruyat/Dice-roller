@@ -2,13 +2,14 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 
 import DiceContainer from '@/components/DiceContainer';
 
+import { defaultDiceType, defaultDiceValueRangeRegex } from '@/utils/constants';
+
 describe('Tests for Dice component', function () {
   beforeEach(() => render(<DiceContainer />));
   afterEach(() => cleanup());
 
   it('should display a dice of the correct type', function () {
-    const diceTextParagraph = screen.getAllByText('D6')[1];
-    console.log(diceTextParagraph);
+    const diceTextParagraph = screen.getAllByText(defaultDiceType)[1];
     expect(diceTextParagraph).toBeTruthy();
   });
 
@@ -18,12 +19,12 @@ describe('Tests for Dice component', function () {
   });
 
   it('should return a value within the correct range when the dice is rolled', async function () {
-    const diceTextParagraph = screen.getAllByText('D6')[1];
+    const diceTextParagraph = screen.getAllByText(defaultDiceType)[1];
     const rollButton = screen.getByRole('button', { name: 'Lancer' });
     fireEvent.click(rollButton);
 
     const diceValue = parseInt(diceTextParagraph.textContent || '0', 10);
-    expect(await screen.findByText(/^[1-6]$/)).toBeTruthy();
+    expect(await screen.findByText(defaultDiceValueRangeRegex)).toBeTruthy();
     expect(diceValue).toBeGreaterThanOrEqual(1);
     expect(diceValue).toBeLessThanOrEqual(6);
   });

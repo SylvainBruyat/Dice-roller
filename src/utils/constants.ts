@@ -26,4 +26,6 @@ export const availableTypesOfDice: TypeOfDice[] = [
 
 export const defaultDiceType: string = 'D6';
 
-export const defaultDice: DiceObject = { type: 'D6', value: null };
+export const defaultDice: DiceObject = { type: defaultDiceType, value: null };
+
+export const defaultDiceValueRangeRegex: RegExp = /^[1-6]$/;
