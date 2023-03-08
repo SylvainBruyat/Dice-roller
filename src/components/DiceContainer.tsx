@@ -1,26 +1,31 @@
-import { ChangeEvent, ReactEventHandler, useState } from 'react';
+import { ChangeEvent } from 'react';
 
 import Dice from './Dice';
-import { DiceObject, availableTypesOfDice, defaultDiceType, defaultDice } from '@/utils/constants';
-import { diceRoll, extractMaxValueFromType } from '@/utils/diceFunction';
 
-export default function DiceContainer() {
-  const [dice, setDice] = useState<DiceObject>(defaultDice);
+import { availableTypesOfDice, defaultDiceType } from '@/utils/constants';
+import { DiceContainerProps } from '@/utils/customTypes';
+import { rollDice, extractMaxValueFromType, findClickedDiceIndex } from '@/utils/diceFunctions';
 
+import styles from '@/styles/DiceContainer.module.scss';
+
+export default function DiceContainer({ dice, dispatch, handleDeleteDice }: DiceContainerProps) {
+  //TODO Modifier pour trouver l'index à modifier et l'utiliser pour modifier le bon élément du tableau de dés
   function handleDiceUpdate(evt: ChangeEvent<HTMLSelectElement> | MouseEvent) {
-    if (evt?.target instanceof HTMLSelectElement) {
+    if (evt.target instanceof HTMLSelectElement) {
       const newDiceType = evt.target.value;
-      setDice({ type: newDiceType, value: null });
-    } else {
+      const indexToChange = findClickedDiceIndex(evt.target);
+      dispatch({ type: 'CHANGE-DICE-TYPE', payload: { index: indexToChange, value: newDiceType } });
+    } else if (evt.target instanceof HTMLButtonElement) {
+      const indexToRoll = findClickedDiceIndex(evt.target);
       const maxValue = extractMaxValueFromType(dice.type);
-      const newDiceValue = diceRoll(maxValue);
-      setDice({ ...dice, value: newDiceValue });
+      const newDiceValue = rollDice(maxValue);
+      dispatch({ type: 'ROLL-DICE', payload: { index: indexToRoll, value: newDiceValue } });
     }
   }
 
   return (
-    <div>
-      <select name='dice-type' defaultValue={'D6'} onChange={(evt) => handleDiceUpdate(evt)}>
+    <article className={styles['dice-container']}>
+      <select name='dice-type' defaultValue={dice.type} onChange={(evt) => handleDiceUpdate(evt)}>
         {availableTypesOfDice.map(({ shortName }) => {
           return (
             <option key={shortName} value={shortName}>
@@ -30,6 +35,7 @@ export default function DiceContainer() {
         })}
       </select>
       <Dice type={dice.type} value={dice.value} handleDiceUpdate={handleDiceUpdate} />
-    </div>
+      <button onClick={(evt) => handleDeleteDice(evt)}>Supprimer</button>
+    </article>
   );
 }

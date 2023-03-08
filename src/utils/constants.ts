@@ -1,18 +1,4 @@
-export type DiceProps = {
-  type: string;
-  value: number | null;
-  handleDiceUpdate: Function;
-};
-
-export type DiceObject = {
-  type: string;
-  value: number | null;
-};
-
-type TypeOfDice = {
-  shortName: string;
-  description: string;
-};
+import { TypeOfDice, DiceObject } from './customTypes';
 
 export const availableTypesOfDice: TypeOfDice[] = [
   { shortName: 'D4', description: 'D4 - Dé à 4 faces' },

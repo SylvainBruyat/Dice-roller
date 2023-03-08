@@ -1,17 +1,13 @@
-import { MouseEvent } from 'react';
+import { ButtonProps } from '@/utils/customTypes';
 
 import styles from '@/styles/Button.module.scss';
-
-type ButtonProps = {
-  handleDiceUpdate: Function;
-};
 
 export default function Button({ handleDiceUpdate }: ButtonProps) {
   return (
     <button
       className={styles['roll-button']}
-      onClick={() => {
-        handleDiceUpdate();
+      onClick={(evt) => {
+        handleDiceUpdate(evt);
       }}
     >
       Lancer

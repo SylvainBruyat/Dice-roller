@@ -1,22 +1,59 @@
 import Head from 'next/head';
 import { Inter } from '@next/font/google';
 
-import { useState } from 'react';
+import { MouseEvent, useReducer, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
-import type { DiceProps } from '@/utils/constants';
+import { defaultDice } from '@/utils/constants';
+import type { DiceObject, DispatchActions } from '@/utils/customTypes';
+import { deleteDice, findClickedDiceIndex } from '@/utils/diceFunctions';
 
+import Header from '@/components/Header';
 import DiceContainer from '@/components/DiceContainer';
 
 import styles from '@/styles/Home.module.scss';
-import Header from '@/components/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export default function Home() {
-  const [dice, setDice] = useState<DiceProps[]>([{ type: 'D6', value: null, handleDiceUpdate: function () {} }]);
+function reducer(state: DiceObject[], action: DispatchActions) {
+  switch (action.type) {
+    case 'ADD-DICE':
+      return [...state, defaultDice];
 
-  function addDice() {
-    setDice(() => [...dice, { type: 'D6', value: null, handleDiceUpdate: function () {} }]);
+    case 'ROLL-DICE':
+      if (typeof action.payload?.value !== 'number') return state;
+
+      const rolledIndex = action.payload.index;
+      const rolledDice = { type: state[rolledIndex].type, value: action.payload.value };
+      return state.map((dice, index) => (index === rolledIndex ? rolledDice : dice));
+
+    case 'CHANGE-DICE-TYPE':
+      if (typeof action.payload?.value !== 'string') return state;
+
+      const modifiedIndex = action.payload.index;
+      const modifiedDice = { type: action.payload.value, value: null };
+      return state.map((dice, index) => (index === modifiedIndex ? modifiedDice : dice));
+
+    case 'DELETE-DICE':
+      if (state.length === 1) return state;
+      if (action.payload === undefined) return state;
+      const newDiceArray = deleteDice(action.payload.index, state);
+      return newDiceArray;
+
+    default:
+      console.log(`The action ${action.type} is unknown`);
+      return state;
+  }
+}
+
+export default function Home() {
+  const [diceArrayRed, dispatch] = useReducer(reducer, [defaultDice]);
+
+  function handleDeleteDice(evt: MouseEvent<HTMLButtonElement>) {
+    if (evt.target instanceof HTMLButtonElement) {
+      const indexToDelete = findClickedDiceIndex(evt.target);
+      if (indexToDelete !== undefined) dispatch({ type: 'DELETE-DICE', payload: { index: indexToDelete } });
+    }
   }
 
   return (
@@ -30,10 +67,12 @@ export default function Home() {
       <Header />
       <main className={styles.main}>
         <>
-          <button onClick={addDice}>Ajouter un D6</button>
+          <button onClick={() => dispatch({ type: 'ADD-DICE' })}>Ajouter un D6</button>
           <section className={styles['dice-group']}>
-            {dice.map((item, index) => (
-              <DiceContainer key={index} /> //TODO Index à modifier. Utiliser uuid ?
+            {diceArrayRed.map((dice) => (
+              /*TODO Sortir la génération de la clé de l'étape de render.
+              Le faire avant en intégrant la clé dans chaque dé du state */
+              <DiceContainer key={uuidv4()} dice={dice} dispatch={dispatch} handleDeleteDice={handleDeleteDice} />
             ))}
           </section>
         </>

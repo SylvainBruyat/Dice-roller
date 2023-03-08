@@ -1,6 +1,4 @@
-import { useState } from 'react';
-
-import type { DiceProps } from '@/utils/constants';
+import type { DiceProps } from '@/utils/customTypes';
 
 import Button from './Button';
 
