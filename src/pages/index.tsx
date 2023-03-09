@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Script from 'next/script';
 import { Inter } from '@next/font/google';
 
 import { MouseEvent, useReducer, useState } from 'react';
@@ -18,23 +19,25 @@ const inter = Inter({ subsets: ['latin'] });
 function reducer(state: DiceObject[], action: DispatchActions) {
   switch (action.type) {
     case 'ADD-DICE':
-      return [...state, defaultDice];
+      const newDice = { ...defaultDice, id: uuidv4() };
+      return [...state, newDice];
 
     case 'ROLL-DICE':
       if (typeof action.payload?.value !== 'number') return state;
 
       const rolledIndex = action.payload.index;
-      const rolledDice = { type: state[rolledIndex].type, value: action.payload.value };
+      const rolledDice = { ...state[rolledIndex], value: action.payload.value };
       return state.map((dice, index) => (index === rolledIndex ? rolledDice : dice));
 
     case 'CHANGE-DICE-TYPE':
       if (typeof action.payload?.value !== 'string') return state;
 
       const modifiedIndex = action.payload.index;
-      const modifiedDice = { type: action.payload.value, value: null };
+      const modifiedDice = { id: state[modifiedIndex].id, type: action.payload.value, value: null };
       return state.map((dice, index) => (index === modifiedIndex ? modifiedDice : dice));
 
     case 'DELETE-DICE':
+      console.log('DELETE-DICE');
       if (state.length === 1) return state;
       if (action.payload === undefined) return state;
       const newDiceArray = deleteDice(action.payload.index, state);
@@ -50,8 +53,8 @@ export default function Home() {
   const [diceArrayRed, dispatch] = useReducer(reducer, [defaultDice]);
 
   function handleDeleteDice(evt: MouseEvent<HTMLButtonElement>) {
-    if (evt.target instanceof HTMLButtonElement) {
-      const indexToDelete = findClickedDiceIndex(evt.target);
+    if (evt.currentTarget instanceof HTMLButtonElement) {
+      const indexToDelete = findClickedDiceIndex(evt.currentTarget);
       if (indexToDelete !== undefined) dispatch({ type: 'DELETE-DICE', payload: { index: indexToDelete } });
     }
   }
@@ -72,10 +75,11 @@ export default function Home() {
             {diceArrayRed.map((dice) => (
               /*TODO Sortir la génération de la clé de l'étape de render.
               Le faire avant en intégrant la clé dans chaque dé du state */
-              <DiceContainer key={uuidv4()} dice={dice} dispatch={dispatch} handleDeleteDice={handleDeleteDice} />
+              <DiceContainer key={dice.id} dice={dice} dispatch={dispatch} handleDeleteDice={handleDeleteDice} />
             ))}
           </section>
         </>
+        <Script src='https://kit.fontawesome.com/583ad7970e.js' crossOrigin='anonymous' />
       </main>
     </>
   );

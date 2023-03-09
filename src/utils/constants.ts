@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { TypeOfDice, DiceObject } from './customTypes';
 
 export const availableTypesOfDice: TypeOfDice[] = [
@@ -12,6 +14,6 @@ export const availableTypesOfDice: TypeOfDice[] = [
 
 export const defaultDiceType: string = 'D6';
 
-export const defaultDice: DiceObject = { type: defaultDiceType, value: null };
+export const defaultDice: DiceObject = { id: uuidv4(), type: defaultDiceType, value: null };
 
 export const defaultDiceValueRangeRegex: RegExp = /^[1-6]$/;

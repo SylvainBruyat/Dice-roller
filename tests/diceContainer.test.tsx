@@ -23,7 +23,7 @@ describe('Tests for DiceContainer component', function () {
   });
 
   it('should display a delete button', function () {
-    const deleteButton = screen.getByRole('button', { name: 'Supprimer' });
+    const deleteButton = screen.getByTitle('Supprimer');
     expect(deleteButton).toBeTruthy();
   });
 });

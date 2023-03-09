@@ -4,6 +4,7 @@ export type TypeOfDice = {
 };
 
 export type DiceObject = {
+  id: string;
   type: string;
   value: number | null;
 };

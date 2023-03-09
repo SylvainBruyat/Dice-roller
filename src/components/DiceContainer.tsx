@@ -35,7 +35,9 @@ export default function DiceContainer({ dice, dispatch, handleDeleteDice }: Dice
         })}
       </select>
       <Dice type={dice.type} value={dice.value} handleDiceUpdate={handleDiceUpdate} />
-      <button onClick={(evt) => handleDeleteDice(evt)}>Supprimer</button>
+      <button className={styles['dice-container--delete-button']} title='Supprimer' onClick={(evt) => handleDeleteDice(evt)}>
+        <i className='fa-solid fa-circle-xmark'></i>
+      </button>
     </article>
   );
 }
