@@ -10,7 +10,7 @@ function deleteDice(id: string) {
 }
 
 describe('Tests for DiceContainer component', function () {
-  beforeEach(() => render(<DiceContainer key={uuidv4()} dice={{ type: 'D6', value: null }} dispatch={() => {}} handleDeleteDice={deleteDice} />));
+  beforeEach(() => render(<DiceContainer key={uuidv4()} dice={{ id: uuidv4(), type: 'D6', value: null }} dispatch={() => {}} />));
 
   it('should display a list of dice types', function () {
     const list = screen.getByRole('combobox');

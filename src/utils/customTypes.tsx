@@ -29,7 +29,6 @@ export type DiceContainerProps = {
   key: string;
   dice: DiceObject;
   dispatch: Function;
-  handleDeleteDice: Function;
 };
 
 export type ButtonProps = {

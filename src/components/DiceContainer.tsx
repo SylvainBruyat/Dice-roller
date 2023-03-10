@@ -1,15 +1,21 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, MouseEvent } from 'react';
 
 import Dice from './Dice';
 
-import { availableTypesOfDice, defaultDiceType } from '@/utils/constants';
+import { availableTypesOfDice } from '@/utils/constants';
 import { DiceContainerProps } from '@/utils/customTypes';
 import { rollDice, extractMaxValueFromType, findClickedDiceIndex } from '@/utils/diceFunctions';
 
 import styles from '@/styles/DiceContainer.module.scss';
 
-export default function DiceContainer({ dice, dispatch, handleDeleteDice }: DiceContainerProps) {
-  //TODO Modifier pour trouver l'index à modifier et l'utiliser pour modifier le bon élément du tableau de dés
+export default function DiceContainer({ dice, dispatch }: DiceContainerProps) {
+  function handleDeleteDice(evt: MouseEvent<HTMLButtonElement>) {
+    if (evt.currentTarget instanceof HTMLButtonElement) {
+      const indexToDelete = findClickedDiceIndex(evt.currentTarget);
+      if (indexToDelete !== undefined) dispatch({ type: 'DELETE-DICE', payload: { index: indexToDelete } });
+    }
+  }
+
   function handleDiceUpdate(evt: ChangeEvent<HTMLSelectElement> | MouseEvent) {
     if (evt.target instanceof HTMLSelectElement) {
       const newDiceType = evt.target.value;

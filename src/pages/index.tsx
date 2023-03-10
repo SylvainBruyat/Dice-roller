@@ -2,12 +2,12 @@ import Head from 'next/head';
 import Script from 'next/script';
 import { Inter } from '@next/font/google';
 
-import { MouseEvent, useReducer, useState } from 'react';
+import { useReducer } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { defaultDice } from '@/utils/constants';
 import type { DiceObject, DispatchActions } from '@/utils/customTypes';
-import { deleteDice, findClickedDiceIndex } from '@/utils/diceFunctions';
+import { deleteDice } from '@/utils/diceFunctions';
 
 import Header from '@/components/Header';
 import DiceContainer from '@/components/DiceContainer';
@@ -50,14 +50,7 @@ function reducer(state: DiceObject[], action: DispatchActions) {
 }
 
 export default function Home() {
-  const [diceArrayRed, dispatch] = useReducer(reducer, [defaultDice]);
-
-  function handleDeleteDice(evt: MouseEvent<HTMLButtonElement>) {
-    if (evt.currentTarget instanceof HTMLButtonElement) {
-      const indexToDelete = findClickedDiceIndex(evt.currentTarget);
-      if (indexToDelete !== undefined) dispatch({ type: 'DELETE-DICE', payload: { index: indexToDelete } });
-    }
-  }
+  const [diceArray, dispatch] = useReducer(reducer, [defaultDice]);
 
   return (
     <>
@@ -72,10 +65,8 @@ export default function Home() {
         <>
           <button onClick={() => dispatch({ type: 'ADD-DICE' })}>Ajouter un D6</button>
           <section className={styles['dice-group']}>
-            {diceArrayRed.map((dice) => (
-              /*TODO Sortir la génération de la clé de l'étape de render.
-              Le faire avant en intégrant la clé dans chaque dé du state */
-              <DiceContainer key={dice.id} dice={dice} dispatch={dispatch} handleDeleteDice={handleDeleteDice} />
+            {diceArray.map((dice) => (
+              <DiceContainer key={dice.id} dice={dice} dispatch={dispatch} />
             ))}
           </section>
         </>
