@@ -14,12 +14,12 @@ export function deleteDice(indexToDelete: number, diceArray: DiceObject[]): Dice
   return diceArray.filter((dice, index) => index !== indexToDelete);
 }
 
-export function findClickedDiceIndex(clickedElement: HTMLElement): number | undefined {
+export function findClickedDiceIndex(clickedElement: HTMLElement): number {
   const diceSectionElement = clickedElement.closest('section');
-  if (!diceSectionElement) return undefined;
+  if (!diceSectionElement) return -1;
   const diceContainerArray = Object.values(diceSectionElement.children);
   const diceContainerElement = clickedElement.closest('article');
-  if (!diceContainerElement) return undefined;
+  if (!diceContainerElement) return -1;
   const indexToDelete: number = diceContainerArray.findIndex((element) => element === diceContainerElement);
   return indexToDelete;
 }

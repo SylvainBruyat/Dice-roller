@@ -7,7 +7,7 @@ export default function Button({ handleDiceUpdate }: ButtonProps) {
     <button
       className={styles['roll-button']}
       onClick={(evt) => {
-        handleDiceUpdate(evt);
+        handleDiceUpdate(evt, 'ROLL');
       }}
     >
       Lancer
