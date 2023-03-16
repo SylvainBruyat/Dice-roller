@@ -1,24 +1,32 @@
-import { render, screen } from '@testing-library/react';
-import { v4 as uuidv4 } from 'uuid';
+import { cleanup, act, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import DiceContainer from '@/components/DiceContainer';
+import Home from '@/pages';
 
 import { defaultDiceType } from '@/utils/constants';
 
-function deleteDice(id: string) {
-  console.log(`Dé ${id} supprimé`);
-}
-
 describe('Tests for DiceContainer component', function () {
-  beforeEach(() => render(<DiceContainer key={uuidv4()} dice={{ id: uuidv4(), type: 'D6', value: null }} dispatch={() => {}} />));
+  beforeEach(() => render(<Home />));
+  afterEach(() => cleanup());
 
   it('should display a list of dice types', function () {
-    const list = screen.getByRole('combobox');
+    const list = screen.getAllByRole('combobox')[0];
     expect(list).toBeTruthy();
   });
 
   it('should display a dice', function () {
     const diceTextParagraph = screen.getAllByText(defaultDiceType)[1];
+    expect(diceTextParagraph).toBeTruthy();
+  });
+
+  it('should change the dice type when a new type is selected', async function () {
+    const typeSelector = screen.getAllByRole('combobox')[1];
+    const typeD12: HTMLOptionElement = screen.getByRole('option', { name: 'D12' });
+    await act(async () => {
+      await userEvent.selectOptions(typeSelector, typeD12);
+    });
+    expect(typeD12.selected).toBe(true);
+    const diceTextParagraph = screen.getAllByText('D12')[1];
     expect(diceTextParagraph).toBeTruthy();
   });
 

@@ -4,10 +4,6 @@ import Home from '@/pages';
 
 import { defaultDiceType, defaultDiceValueRangeRegex } from '@/utils/constants';
 
-function deleteDice(id: string) {
-  console.log(`Dé ${id} supprimé`);
-}
-
 describe('Tests for Dice component', function () {
   beforeEach(() => render(<Home />));
   afterEach(() => cleanup());
