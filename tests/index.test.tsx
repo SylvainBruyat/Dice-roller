@@ -2,9 +2,16 @@ import { cleanup, act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event';
 
 import Home from '@/pages';
+import { DiceProvider } from '@/utils/DiceContext';
 
 describe('Tests for Home page', function () {
-  beforeEach(() => render(<Home />));
+  beforeEach(() =>
+    render(
+      <DiceProvider>
+        <Home />
+      </DiceProvider>
+    )
+  );
   afterEach(() => cleanup());
 
   it('should display a header', function () {

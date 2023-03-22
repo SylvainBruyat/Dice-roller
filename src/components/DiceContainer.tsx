@@ -7,30 +7,10 @@ import { DiceContainerProps } from '@/utils/customTypes';
 import { rollDice, extractMaxValueFromType, findClickedDiceIndex } from '@/utils/diceFunctions';
 
 import styles from '@/styles/DiceContainer.module.scss';
+import { useDice } from '@/utils/DiceContext';
 
-/* TODO Finir de refactoriser la gestion des évènements dans cette fonction
- * en utilisant le paramètre actionType pour choisir quels arguments passer à dispatch()
- * Eventuellement modifier findClickedDiceIndex pour passer evt.currentTarget (= DiceContainer) en paramètre */
-export default function DiceContainer({ dice, dispatch }: DiceContainerProps) {
-  function handleDiceUpdate(evt: ChangeEvent | MouseEvent, actionType: string) {
-    if (!(evt.currentTarget instanceof HTMLSelectElement || evt.currentTarget instanceof HTMLButtonElement)) {
-      return;
-    }
-
-    const clickedIndex = findClickedDiceIndex(evt.currentTarget);
-    if (clickedIndex === -1) return;
-
-    if (actionType === 'CHANGE-TYPE') {
-      const newDiceType = evt.currentTarget.value;
-      dispatch({ type: actionType, payload: { index: clickedIndex, value: newDiceType } });
-    } else if (actionType === 'ROLL') {
-      const maxValue = extractMaxValueFromType(dice.type);
-      const newDiceValue = rollDice(maxValue);
-      dispatch({ type: actionType, payload: { index: clickedIndex, value: newDiceValue } });
-    } else if (actionType === 'DELETE') {
-      dispatch({ type: actionType, payload: { index: clickedIndex } });
-    }
-  }
+export default function DiceContainer({ dice }: DiceContainerProps) {
+  const { handleDiceUpdate } = useDice();
 
   return (
     <article className={styles['dice-container']} data-id={dice.id}>

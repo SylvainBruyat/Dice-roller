@@ -13,7 +13,7 @@ export type DiceObject = {
  * Vérifier aussi si le problème n'est pas au niveau du passage de dispatch en props et comment les props sont typées */
 export type DispatchActions = {
   type: string;
-  payload?: {
+  payload: {
     index: number;
     value?: number | string;
   };
@@ -28,7 +28,7 @@ export type DiceProps = {
 export type DiceContainerProps = {
   key: string;
   dice: DiceObject;
-  dispatch: Function;
+  handleDiceUpdate: Function;
 };
 
 export type ButtonProps = {

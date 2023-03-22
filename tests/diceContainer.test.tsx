@@ -4,9 +4,16 @@ import userEvent from '@testing-library/user-event';
 import Home from '@/pages';
 
 import { defaultDiceType } from '@/utils/constants';
+import { DiceProvider } from '@/utils/DiceContext';
 
 describe('Tests for DiceContainer component', function () {
-  beforeEach(() => render(<Home />));
+  beforeEach(() =>
+    render(
+      <DiceProvider>
+        <Home />
+      </DiceProvider>
+    )
+  );
   afterEach(() => cleanup());
 
   it('should display a list of dice types', function () {

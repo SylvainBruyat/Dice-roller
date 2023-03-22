@@ -3,9 +3,16 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import Home from '@/pages';
 
 import { defaultDiceType, defaultDiceValueRangeRegex } from '@/utils/constants';
+import { DiceProvider } from '@/utils/DiceContext';
 
 describe('Tests for Dice component', function () {
-  beforeEach(() => render(<Home />));
+  beforeEach(() =>
+    render(
+      <DiceProvider>
+        <Home />
+      </DiceProvider>
+    )
+  );
   afterEach(() => cleanup());
 
   it('should display a dice of the correct type', function () {
