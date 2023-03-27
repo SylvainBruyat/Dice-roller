@@ -42,6 +42,7 @@ export default function Home() {
             <DiceContainer key={dice.id} dice={dice} handleDiceUpdate={handleDiceUpdate} />
           ))}
         </section>
+        <button onClick={(evt) => handleDiceUpdate(evt, 'ROLL-ALL')}>Lancer tout</button>
         <Script src='https://kit.fontawesome.com/583ad7970e.js' crossOrigin='anonymous' />
       </main>
     </>

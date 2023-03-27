@@ -55,7 +55,7 @@ export const DiceProvider = ({ initialDice = defaultDice, children }: DiceProvid
     if (!(evt.currentTarget instanceof HTMLSelectElement || evt.currentTarget instanceof HTMLButtonElement)) return;
 
     const clickedIndex = findClickedDiceIndex(evt.currentTarget);
-    if (clickedIndex === -1 && actionType !== 'ADD') return;
+    if (clickedIndex === -1 && actionType !== 'ADD' && actionType !== 'ROLL-ALL') return;
 
     if (actionType === 'ADD') {
       dispatch({ type: actionType, payload: { index: 0, value: 'D6' } });
@@ -66,6 +66,12 @@ export const DiceProvider = ({ initialDice = defaultDice, children }: DiceProvid
       const maxValue = extractMaxValueFromType(diceArray[clickedIndex].type);
       const newDiceValue = rollDice(maxValue);
       dispatch({ type: actionType, payload: { index: clickedIndex, value: newDiceValue } });
+    } else if (actionType === 'ROLL-ALL') {
+      for (let [index, dice] of diceArray.entries()) {
+        const maxValue = extractMaxValueFromType(dice.type);
+        const newDiceValue = rollDice(maxValue);
+        dispatch({ type: 'ROLL', payload: { index, value: newDiceValue } });
+      }
     } else if (actionType === 'DELETE') {
       dispatch({ type: actionType, payload: { index: clickedIndex } });
     }
